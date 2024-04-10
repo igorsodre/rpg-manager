@@ -39,6 +39,11 @@ export default function RootLayout() {
     return <RootLayoutNav/>;
 }
 
+export const unstable_settings = {
+    // Ensure any route can link back to `/`
+    initialRouteName: 'index',
+};
+
 function RootLayoutNav() {
     const colorScheme = useColorScheme();
 
