@@ -41,7 +41,7 @@ export default function RootLayout() {
 
 export const unstable_settings = {
     // Ensure any route can link back to `/`
-    initialRouteName: 'index',
+    initialRouteName: 'login/index'
 };
 
 function RootLayoutNav() {
@@ -49,9 +49,7 @@ function RootLayoutNav() {
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Stack>
-                <Stack.Screen name="login" options={{headerShown: false}}/>
-            </Stack>
+            <Stack screenOptions={{headerShown: false}}/>
         </ThemeProvider>
     );
 }
