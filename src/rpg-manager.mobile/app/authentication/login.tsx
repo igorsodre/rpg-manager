@@ -1,4 +1,4 @@
-import { Image, ImageBackground, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { Image, ImageBackground, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { GestureHandlerRootView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'expo-modules-core';
@@ -7,7 +7,7 @@ function Logo() {
   return (
     <View className="flex-1 justify-center">
       <Image resizeMode="contain"
-             source={require('../assets/images/AppLogo.png')}
+             source={require('../../assets/images/AppLogo.png')}
              style={{ width: 300, height: 70 }} />
     </View>
   );
@@ -24,7 +24,7 @@ function GoogleLoginButton() {
       <GestureHandlerRootView>
         <TouchableOpacity onPress={handlePress}>
           <Image resizeMode="contain"
-                 source={require('../assets/images/SignupSignInWithGoogleButton.png')}
+                 source={require('../../assets/images/SignupSignInWithGoogleButton.png')}
                  style={{ width: 250, height: 60 }} />
         </TouchableOpacity>
       </GestureHandlerRootView>
@@ -36,8 +36,11 @@ function EmailAndPasswordForm() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
+  let handlePress = () => {
+    console.log('EmailAndPasswordForm button pressed');
+  };
   return (
-    <View style={{ flex: 3 }}>
+    <View className="flex-[3]">
       <GestureHandlerRootView>
         <KeyboardAvoidingView
           className="flex-1 w-full"
@@ -56,7 +59,7 @@ function EmailAndPasswordForm() {
           />
 
           <TextInput
-            placeholder="password"
+            placeholder="Password"
             placeholderTextColor={emailFocused ? '#fff' : '#000'}
             keyboardType={'visible-password'}
             secureTextEntry={true}
@@ -66,19 +69,28 @@ function EmailAndPasswordForm() {
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
           />
+
+          <TouchableOpacity onPress={handlePress} className="h-14 pt-2 items-end">
+            <View className="flex-1 justify-center items-center py-2 px-4 bg-teal-500  h-12 w-1/2">
+              <Text className="text-black font-bold text-xl">Login</Text>
+            </View>
+          </TouchableOpacity>
+
         </KeyboardAvoidingView>
       </GestureHandlerRootView>
     </View>
   );
 }
 
-const backgroundImage = require('../assets/images/LoginBackgrownd.png');
 export default function Login() {
   return (
     <View
       className="flex-1 w-full"
     >
-      <ImageBackground source={backgroundImage} resizeMode="cover" className="flex-1 justify-center items-center pt-10">
+      <ImageBackground
+        source={require('../../assets/images/LoginBackgrownd.png')}
+        resizeMode="cover"
+        className="flex-1 justify-center items-center pt-10">
         <Logo />
         <GoogleLoginButton />
 

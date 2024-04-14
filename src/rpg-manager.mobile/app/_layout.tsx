@@ -42,7 +42,7 @@ export default function RootLayout() {
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`
-  initialRouteName: 'login',
+  initialRouteName: 'authentication/login',
 };
 
 function RootLayoutNav() {
@@ -52,7 +52,7 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="login" />
+        {/*<Stack.Screen name="authlogin" />*/}
       </Stack>
     </ThemeProvider>
   );
