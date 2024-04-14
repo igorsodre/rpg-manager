@@ -1,4 +1,4 @@
-import { Image, ImageBackground, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, KeyboardAvoidingView, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { GestureHandlerRootView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'expo-modules-core';
