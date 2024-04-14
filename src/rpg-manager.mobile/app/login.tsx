@@ -1,12 +1,11 @@
-import { Image, ImageBackground, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
-import { Gesture, GestureHandlerRootView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'expo-modules-core';
-import { useHeaderHeight } from '@react-navigation/elements';
 
 function Logo() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View className="flex-1 justify-center">
       <Image resizeMode="contain"
              source={require('../assets/images/AppLogo.png')}
              style={{ width: 300, height: 70 }} />
@@ -21,7 +20,7 @@ function GoogleLoginButton() {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View className="flex-1 justify-center">
       <GestureHandlerRootView>
         <TouchableOpacity onPress={handlePress}>
           <Image resizeMode="contain"
@@ -41,27 +40,29 @@ function EmailAndPasswordForm() {
     <View style={{ flex: 3 }}>
       <GestureHandlerRootView>
         <KeyboardAvoidingView
-          style={{ flex: 1, width: '100%' }}
+          className="flex-1 w-full"
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 50}
         >
 
           <TextInput
             placeholder="Email"
+            placeholderTextColor={emailFocused ? '#fff' : '#000'}
             maxLength={250}
             keyboardType={'email-address'}
-            style={emailFocused ? styles.textInputFocused : styles.textInput}
+            className={emailFocused ? 'h-12 text-xl min-w-[250] max-w-[300] border-b-2 border-b-white' : 'h-10 text-xl min-w-[250] max-w-[300] border-b-2 border-b-black'}
             onFocus={() => setEmailFocused(true)}
             onBlur={() => setEmailFocused(false)}
           />
 
           <TextInput
             placeholder="password"
+            placeholderTextColor={emailFocused ? '#fff' : '#000'}
             keyboardType={'visible-password'}
             secureTextEntry={true}
             inputMode="none"
             maxLength={250}
-            style={passwordFocused ? styles.textInputFocused : styles.textInput}
+            className={passwordFocused ? 'h-12 text-xl min-w-[250] max-w-[300] border-b-2 border-b-white' : 'h-10 text-xl min-w-[250] max-w-[300] border-b-2 border-b-black'}
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
           />
@@ -75,9 +76,9 @@ const backgroundImage = require('../assets/images/LoginBackgrownd.png');
 export default function Login() {
   return (
     <View
-      style={styles.container}
+      className="flex-1 w-full"
     >
-      <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.background}>
+      <ImageBackground source={backgroundImage} resizeMode="cover" className="flex-1 justify-center items-center pt-10">
         <Logo />
         <GoogleLoginButton />
 
@@ -87,29 +88,3 @@ export default function Login() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-  },
-  background: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 47,
-  },
-  textInput: {
-    height: 50,
-    fontSize: 18,
-    borderBottomWidth: 2,
-    borderBottomColor: '#000',
-  },
-  textInputFocused: {
-    height: 50,
-    fontSize: 18,
-    minWidth: 250,
-    maxWidth: 300,
-    borderBottomWidth: 2, // Make the underline more pronounced
-    borderBottomColor: '#fff', // Change the underline color to white
-  },
-});
