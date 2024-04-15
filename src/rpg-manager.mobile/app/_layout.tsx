@@ -16,6 +16,11 @@ export {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+export const unstable_settings = {
+  // Ensure any route can link back to `/`
+  initialRouteName: '(authentication)',
+};
+
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -40,10 +45,6 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-export const unstable_settings = {
-  // Ensure any route can link back to `/`
-  initialRouteName: 'authentication/login',
-};
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
@@ -52,7 +53,7 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
 
       <Stack screenOptions={{ headerShown: false }}>
-        {/*<Stack.Screen name="authlogin" />*/}
+        <Stack.Screen name="(authentication)" />
       </Stack>
     </ThemeProvider>
   );

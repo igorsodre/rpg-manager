@@ -1,7 +1,8 @@
-import { Image, ImageBackground, KeyboardAvoidingView, Text, View } from 'react-native';
+import { Image, ImageBackground, KeyboardAvoidingView, Pressable, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { GestureHandlerRootView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'expo-modules-core';
+import { Link } from 'expo-router';
 
 function Logo() {
   return (
@@ -82,6 +83,18 @@ function EmailAndPasswordForm() {
   );
 }
 
+function SignupLink() {
+  return (
+    <View className="flex-1">
+      <Link href="/(authentication)/signup" className="h-2 w-2">
+        <Pressable onPress={() => console.log('Clicked the pressable')}>
+          <Text className="text-white text-center"> Sign up</Text>
+        </Pressable>
+      </Link>
+    </View>
+  );
+}
+
 export default function Login() {
   return (
     <View
@@ -95,6 +108,8 @@ export default function Login() {
         <GoogleLoginButton />
 
         <EmailAndPasswordForm />
+
+        <SignupLink />
       </ImageBackground>
     </View>
   );
