@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4B073B60
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg-manager.server", "src\rpg-manager.server\rpg-manager.server.csproj", "{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg-manager.database", "src\rpg-manager.database\rpg-manager.database.csproj", "{3DE613E0-60BE-45C3-BC60-4DF8843610C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,11 +15,16 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD} = {E306B3DA-9F32-414C-A366-1E18E933CC15}
+		{3DE613E0-60BE-45C3-BC60-4DF8843610C2} = {E306B3DA-9F32-414C-A366-1E18E933CC15}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
