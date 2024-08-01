@@ -8,13 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\rpg-manager.database\rpg-manager.database.csproj" />
-      <ProjectReference Include="..\shared\rpg-manager.shared.utils\rpg-manager.shared.utils.csproj" />
+        <ProjectReference Include="..\rpg-manager.database\rpg-manager.database.csproj"/>
+        <ProjectReference Include="..\shared\rpg-manager.shared.utils\rpg-manager.shared.utils.csproj"/>
     </ItemGroup>
 
 </Project>

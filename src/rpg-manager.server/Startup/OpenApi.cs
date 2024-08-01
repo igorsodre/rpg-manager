@@ -1,6 +1,6 @@
 namespace rpg_manager.server.Startup;
 
-public static class OpenApiExtensions
+public static class OpenApi
 {
     public static WebApplicationBuilder AddOpenApi(this WebApplicationBuilder builder)
     {

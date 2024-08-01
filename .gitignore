@@ -482,3 +482,12 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# generated keys
+private.pem
+private.pem.base64
+public.pem
+public.pem.base64
+
+# secrets
+secrets.json

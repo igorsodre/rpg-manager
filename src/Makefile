@@ -12,3 +12,9 @@ spin-database:
 	
 spin-cache:
 	docker-compose  -f docker-compose.utils.yaml up -d redis
+	
+generate-key-pair-base64:
+	openssl genrsa -out private.pem 2048
+	openssl rsa -in private.pem -pubout -out public.pem
+	openssl rsa -in private.pem -outform PEM | base64 -w 0 > private.pem.base64
+	openssl rsa -in private.pem -pubout -outform PEM | base64 -w 0 > public.pem.base64
