@@ -7,7 +7,8 @@ builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.Environment
     .AddEnvironmentVariables();
 {
     builder.AddOpenApi();
-    builder.AddDatabase(builder.Configuration.GetConnectionString("Database")!);
+    builder.AddDatabase(builder.Configuration.GetConnectionString("Database"));
+    builder.AddServices();
 }
 
 // Configure the HTTP request pipeline.
@@ -20,6 +21,8 @@ var app = builder.Build();
     app.UseCors();
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseGlobalErrorHandling();
+    app.MapControllers();
 }
 
 app.Run();

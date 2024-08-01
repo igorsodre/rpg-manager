@@ -2,6 +2,10 @@ using System.Net;
 
 namespace rpg_manager.shared.utils.Types;
 
-public record ApplicationError(string Message, HttpStatusCode StatusCode);
+public record ApplicationError(
+    string ErrorMessage,
+    Dictionary<string, List<string>> ErrorMessages,
+    HttpStatusCode StatusCode
+);
 
-public record NotFoundError(string Message) : ApplicationError(Message, HttpStatusCode.NotFound);
+public record NotFoundError(string ErrorMessage) : ApplicationError(ErrorMessage, [], HttpStatusCode.NotFound);

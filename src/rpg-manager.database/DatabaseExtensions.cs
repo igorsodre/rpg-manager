@@ -8,7 +8,7 @@ namespace rpg_manager.database;
 
 public static class DatabaseExtensions
 {
-    public static WebApplicationBuilder AddDatabase(this WebApplicationBuilder builder, string connectionString)
+    public static WebApplicationBuilder AddDatabase(this WebApplicationBuilder builder, string? connectionString)
     {
         if (string.IsNullOrEmpty(connectionString))
         {
