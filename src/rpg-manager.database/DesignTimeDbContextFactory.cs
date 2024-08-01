@@ -22,9 +22,10 @@ public static class MigrationsConfig
         var buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var filePath = Path.Combine(buildDir!, "databasesettings.json");
         return new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(filePath, optional: true)
-            .AddEnvironmentVariables()
-            .Build()
-            .GetConnectionString("Database");
+                   .AddJsonFile(filePath, optional: true)
+                   .AddEnvironmentVariables()
+                   .Build()
+                   .GetConnectionString("Database") ??
+               throw new Exception("Database Connection String Not Found");
     }
 }

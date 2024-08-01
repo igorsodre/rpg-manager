@@ -1,0 +1,172 @@
+networks:
+  development:
+    name: development
+
+services:
+  # sql server
+  # connection string: "Server=localhost,1433;Database=Development;User Id=sa;Password=yourStrong(@@Password12;"
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server-development
+    hostname: mssql
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: yourStrong(@@Password12
+    networks:
+      - development
+
+  # postgres
+  # connection string:"User ID=development;Password=password123;Host=localhost;Port=5432;Database=development;Pooling=true;"
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    container_name: postgresql-development
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=development
+      - POSTGRESQL_PASSWORD=password123
+      - POSTGRESQL_DATABASE=development
+    networks:
+      - development
+  # redis
+  # connection string: "localhost:6379,password=uU23o#0TU#BtNycSFv"
+  redis:
+    image: docker.io/bitnami/redis:latest
+    container_name: redis-development
+    environment:
+      - REDIS_PASSWORD=uU23o#0TU#BtNycSFv
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+    networks:
+      - development
+
+  # rabbitmq
+  rabbitmq:
+    image: docker.io/bitnami/rabbitmq:latest
+    container_name: rabbitmq-development
+    ports:
+      - '4369:4369'
+      - '5551:5551'
+      - '5552:5552'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_SECURE_PASSWORD=yes
+      - RABBITMQ_LOGS=-
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=password
+    volumes:
+      - 'rabbitmq_data:/bitnami/rabbitmq/mnesia'
+    networks:
+      - development
+
+  # kafka
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:latest
+    container_name: zookeeper-development
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - development
+  kafka:
+    image: docker.io/bitnami/kafka:latest
+    container_name: kafka-development
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_INTER_BROKER_USER=user
+      - KAFKA_INTER_BROKER_PASSWORD=password
+    networks:
+      - development
+    depends_on:
+      - zookeeper
+
+  # mongodb
+  # connections string: "mongodb://root:password@localhost:27017"
+  mongodb-sharded:
+    image: docker.io/bitnami/mongodb-sharded:5.0
+    container_name: mongodb-sharded-development
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-sharded
+      - MONGODB_SHARDING_MODE=mongos
+      - MONGODB_CFG_PRIMARY_HOST=mongodb-cfg
+      - MONGODB_CFG_REPLICA_SET_NAME=cfgreplicaset
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_ROOT_PASSWORD=password
+    ports:
+      - "27017:27017"
+    networks:
+      - development
+
+  mongodb-shard0:
+    image: docker.io/bitnami/mongodb-sharded:5.0
+    container_name: mongodb-shard0-development
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-shard0
+      - MONGODB_SHARDING_MODE=shardsvr
+      - MONGODB_MONGOS_HOST=mongodb-sharded
+      - MONGODB_ROOT_PASSWORD=password
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_REPLICA_SET_NAME=shard0
+    volumes:
+      - 'shard0_data:/bitnami'
+    networks:
+      - development
+
+  mongodb-cfg:
+    image: docker.io/bitnami/mongodb-sharded:5.0
+    container_name: mongodb-cfg-development
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-cfg
+      - MONGODB_SHARDING_MODE=configsvr
+      - MONGODB_ROOT_PASSWORD=password
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_REPLICA_SET_NAME=cfgreplicaset
+    volumes:
+      - 'cfg_data:/bitnami'
+    networks:
+      - development
+
+volumes:
+  postgresql_data:
+    driver: local
+    # name: postgresql_data
+  redis_data:
+    driver: local
+    # name: redis_data
+  rabbitmq_data:
+    driver: local
+    # name: rabbitmq_data
+  shard0_data:
+    driver: local
+    # name: shard0_data
+  cfg_data:
+    driver: local
+    # name: cfg_data
+  zookeeper_data:
+    driver: local
+    # name: zookeeper_data
+  kafka_data:
+    driver: local
+    # name: kafka_data

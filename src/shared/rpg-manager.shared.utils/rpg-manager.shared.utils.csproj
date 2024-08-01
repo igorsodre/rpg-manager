@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>rpg_manager.shared.utils</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OneOf.Extended" Version="3.0.271" />
+      <PackageReference Include="OneOf.Monads" Version="1.21.0" />
+      <PackageReference Include="OneOf.SourceGenerator" Version="3.0.271" />
+    </ItemGroup>
+
+</Project>

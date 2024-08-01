@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\rpg-manager.database\rpg-manager.database.csproj" />
+      <ProjectReference Include="..\shared\rpg-manager.shared.utils\rpg-manager.shared.utils.csproj" />
     </ItemGroup>
 
 </Project>

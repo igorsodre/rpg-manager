@@ -1,12 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E306B3DA-9F32-414C-A366-1E18E933CC15}"
+	ProjectSection(SolutionItems) = preProject
+		src\docker-compose.utils.yaml = src\docker-compose.utils.yaml
+		src\Makefile = src\Makefile
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4B073B60-FD71-4009-A13D-9C8D76815A59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg-manager.server", "src\rpg-manager.server\rpg-manager.server.csproj", "{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg-manager.database", "src\rpg-manager.database\rpg-manager.database.csproj", "{3DE613E0-60BE-45C3-BC60-4DF8843610C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{41C393D0-2C2D-4694-8192-5EDEE1EB9491}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rpg-manager.shared.utils", "src\shared\rpg-manager.shared.utils\rpg-manager.shared.utils.csproj", "{F41EACBE-3C6C-405A-8F23-3EFE2DD235BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,6 +25,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD} = {E306B3DA-9F32-414C-A366-1E18E933CC15}
 		{3DE613E0-60BE-45C3-BC60-4DF8843610C2} = {E306B3DA-9F32-414C-A366-1E18E933CC15}
+		{41C393D0-2C2D-4694-8192-5EDEE1EB9491} = {E306B3DA-9F32-414C-A366-1E18E933CC15}
+		{F41EACBE-3C6C-405A-8F23-3EFE2DD235BC} = {41C393D0-2C2D-4694-8192-5EDEE1EB9491}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2EB48B9F-E04F-48B5-9DAB-D396985E46CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -26,5 +37,9 @@ Global
 		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DE613E0-60BE-45C3-BC60-4DF8843610C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F41EACBE-3C6C-405A-8F23-3EFE2DD235BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F41EACBE-3C6C-405A-8F23-3EFE2DD235BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F41EACBE-3C6C-405A-8F23-3EFE2DD235BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F41EACBE-3C6C-405A-8F23-3EFE2DD235BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
