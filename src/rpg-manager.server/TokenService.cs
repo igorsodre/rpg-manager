@@ -12,12 +12,12 @@ public class TokenService
     private readonly TimeProvider _timeProvider;
     private readonly int _tokenLifetimeInMinutes;
 
-    public TokenService(AuthenticationSection authenticationSection, TimeProvider timeProvider)
+    public TokenService(JwtConfigOptions jwtConfigOptions, TimeProvider timeProvider)
     {
-        _tokenLifetimeInMinutes = authenticationSection.TokenLifetimeInMinutes;
+        _tokenLifetimeInMinutes = jwtConfigOptions.TokenLifetimeInMinutes;
         _timeProvider = timeProvider;
         using var rsa = RSA.Create();
-        rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(authenticationSection.PrivateKey), out _);
+        rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(jwtConfigOptions.PrivateKey), out _);
         var rsaParameters = rsa.ExportParameters(false);
         _rsaKey = new RsaSecurityKey(rsaParameters);
     }

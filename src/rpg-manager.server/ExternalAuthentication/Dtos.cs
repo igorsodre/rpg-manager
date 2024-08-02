@@ -4,9 +4,9 @@ namespace rpg_manager.server.ExternalAuthentication;
 
 public record ExternalAuthRequest(string Provider, string IdToken)
 {
-    public LoginData ToLoginData()
+    public ExternalLoginData ToLoginData()
     {
-        return new LoginData(Provider, IdToken);
+        return new ExternalLoginData(Provider, IdToken);
     }
 };
 

@@ -21,9 +21,6 @@ public class ExternalAuthController : ControllerBase
     public async Task<IActionResult> ExternalLogin(ExternalAuthRequest request, CancellationToken cancellationToken)
     {
         var result = await _externalAuthenticationService.Login(request.ToLoginData(), cancellationToken);
-        return result.Match<IActionResult>(
-            error => error.Value.ToProblemResponse(),
-            success => Ok(success.Value.ToApiResponse())
-        );
+        return result.ToHttpResponse();
     }
 }

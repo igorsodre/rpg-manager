@@ -5,7 +5,10 @@ using rpg_manager.shared.utils.Types;
 
 namespace rpg_manager.database.Repositories;
 
-public record struct CreateUserData(string Id, string Name, string Email, string UserName);
+public record struct CreateUserData(string Name, string Email, string UserName, string? Id = null)
+{
+    public string Id { get; init; } = Id ?? string.Empty;
+};
 
 public interface IUserRepository
 {

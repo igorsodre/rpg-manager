@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using rpg_manager.server.Infrastructure.LoginProviders;
+using rpg_manager.server.Types;
 
 namespace rpg_manager.server.Startup;
 
@@ -8,12 +10,57 @@ public static class Authentication
 {
     public static WebApplicationBuilder AddAsymmetricAuthentication(this WebApplicationBuilder builder)
     {
-        var authenticationSection = builder.Configuration.GetSection("Authentication").Get<AuthenticationSection>();
-        if (authenticationSection is null)
+        var (accessTokenOptions, refreshTokenOptions) = CollectJwtTokenKeys(builder);
+        builder.Services.Configure<GoogleSettings>(builder.Configuration.GetSection("Authentication__Google"));
+
+        AddJwtBearerTokenAuthScheme(builder, accessTokenOptions);
+
+        builder.Services.AddKeyedSingleton<TokenService>(
+            Constants.Jwt.TokenServiceForAccessJwt,
+            (serviceProvider, _) => new TokenService(
+                accessTokenOptions,
+                serviceProvider.GetRequiredService<TimeProvider>()
+            )
+        );
+        builder.Services.AddKeyedSingleton<TokenService>(
+            Constants.Jwt.TokenServiceForRefreshJwt,
+            (serviceProvider, _) => new TokenService(
+                refreshTokenOptions,
+                serviceProvider.GetRequiredService<TimeProvider>()
+            )
+        );
+
+        builder.Services.AddScoped<IGoogleLoginProvider, GoogleLoginProvider>();
+        return builder;
+    }
+
+    private static (JwtConfigOptions accessTokenOptions, JwtConfigOptions refreshTokenOptions) CollectJwtTokenKeys(
+        WebApplicationBuilder builder
+    )
+    {
+        var accessTokenOptions = builder.Configuration.GetSection("Authentication__AccessTokenOptions")
+            .Get<JwtConfigOptions>();
+        if (accessTokenOptions is null ||
+            string.IsNullOrEmpty(accessTokenOptions.PrivateKey) ||
+            string.IsNullOrEmpty(accessTokenOptions.PrivateKey))
         {
-            throw new InvalidOperationException("Authentication section is missing from configuration.");
+            throw new InvalidOperationException("AccessTokenOptions section is missing from configuration.");
         }
 
+        var refreshTokenOptions = builder.Configuration.GetSection("Authentication__RefreshTokenOptions")
+            .Get<JwtConfigOptions>();
+        if (refreshTokenOptions is null ||
+            string.IsNullOrEmpty(refreshTokenOptions.PrivateKey) ||
+            string.IsNullOrEmpty(refreshTokenOptions.PrivateKey))
+        {
+            throw new InvalidOperationException("RefreshTokenOptions section is missing from configuration.");
+        }
+
+        return (accessTokenOptions, refreshTokenOptions);
+    }
+
+    private static void AddJwtBearerTokenAuthScheme(WebApplicationBuilder builder, JwtConfigOptions accessTokenOptions)
+    {
         builder.Services.AddAuthentication(
                 options => {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -24,7 +71,7 @@ public static class Authentication
             .AddJwtBearer(
                 options => {
                     using var rsa = RSA.Create();
-                    rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(authenticationSection.PublicKey), out _);
+                    rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(accessTokenOptions.PublicKey), out _);
 
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -39,7 +86,5 @@ public static class Authentication
                     };
                 }
             );
-        builder.Services.AddSingleton(authenticationSection);
-        return builder;
     }
 }
