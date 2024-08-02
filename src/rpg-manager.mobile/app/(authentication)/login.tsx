@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { GestureHandlerRootView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Platform } from 'expo-modules-core';
 import { Link } from 'expo-router';
+import "../../global.css"
+
 
 function Logo() {
   return (

@@ -1,7 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Identity;
 using OneOf.Monads;
-using OneOf.Types;
 using rpg_manager.database.Entities;
 using rpg_manager.database.Repositories;
 using rpg_manager.shared.utils.Types;
@@ -86,7 +85,7 @@ public class EfUserRepository : IUserRepository
             );
 
             return new ApplicationError(
-                $"Unable to create user for email: {userData.Email}",
+                $"Unable to create entry user for email: {userData.Email}",
                 errorMessages,
                 HttpStatusCode.BadRequest
             );
