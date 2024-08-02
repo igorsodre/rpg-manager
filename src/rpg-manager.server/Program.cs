@@ -3,12 +3,12 @@ using rpg_manager.server.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true)
-    .AddJsonFile("secretsettings.json", true)
+    .AddJsonFile("secrets.json", true)
     .AddEnvironmentVariables();
 {
-    builder.AddOpenApi();
+    builder.AddErrorHandling().AddOpenApi();
     builder.AddDatabase(builder.Configuration.GetConnectionString("Database"));
-    builder.AddServices();
+    builder.AddAsymmetricAuthentication().AddRepositories().AddServices();
 }
 
 // Configure the HTTP request pipeline.

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using rpg_manager.server.Infrastructure.LoginProviders;
 using rpg_manager.server.Types;
+using rpg_manager.shared.utils;
 
 namespace rpg_manager.server.Startup;
 
@@ -11,7 +12,9 @@ public static class Authentication
     public static WebApplicationBuilder AddAsymmetricAuthentication(this WebApplicationBuilder builder)
     {
         var (accessTokenOptions, refreshTokenOptions) = CollectJwtTokenKeys(builder);
-        builder.Services.Configure<GoogleSettings>(builder.Configuration.GetSection("Authentication__Google"));
+        builder.Services.Configure<GoogleSettings>(
+            builder.Configuration.GetSection("Authentication").GetSection("Google")
+        );
 
         AddJwtBearerTokenAuthScheme(builder, accessTokenOptions);
 
@@ -38,7 +41,8 @@ public static class Authentication
         WebApplicationBuilder builder
     )
     {
-        var accessTokenOptions = builder.Configuration.GetSection("Authentication__AccessTokenOptions")
+        var accessTokenOptions = builder.Configuration.GetSection("Authentication")
+            .GetSection("AccessTokenOptions")
             .Get<JwtConfigOptions>();
         if (accessTokenOptions is null ||
             string.IsNullOrEmpty(accessTokenOptions.PrivateKey) ||
@@ -47,7 +51,8 @@ public static class Authentication
             throw new InvalidOperationException("AccessTokenOptions section is missing from configuration.");
         }
 
-        var refreshTokenOptions = builder.Configuration.GetSection("Authentication__RefreshTokenOptions")
+        var refreshTokenOptions = builder.Configuration.GetSection("Authentication")
+            .GetSection("RefreshTokenOptions")
             .Get<JwtConfigOptions>();
         if (refreshTokenOptions is null ||
             string.IsNullOrEmpty(refreshTokenOptions.PrivateKey) ||
@@ -71,7 +76,7 @@ public static class Authentication
             .AddJwtBearer(
                 options => {
                     using var rsa = RSA.Create();
-                    rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(accessTokenOptions.PublicKey), out _);
+                    rsa.ImportFromPem(accessTokenOptions.PrivateKey.FromBase64());
 
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -81,7 +86,7 @@ public static class Authentication
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateLifetime = true,
-                        ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha512 },
+                        ValidAlgorithms = new[] { SecurityAlgorithms.RsaSha512 },
                         ClockSkew = TimeSpan.Zero,
                     };
                 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using rpg_manager.server.Types;
 
@@ -22,5 +23,12 @@ public class ExternalAuthController : ControllerBase
     {
         var result = await _externalAuthenticationService.Login(request.ToLoginData(), cancellationToken);
         return result.ToHttpResponse();
+    }
+
+    [HttpGet("test")]
+    [Authorize]
+    public IActionResult Test()
+    {
+        return Ok(User.Claims);
     }
 }

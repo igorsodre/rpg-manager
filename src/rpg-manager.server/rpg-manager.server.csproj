@@ -21,4 +21,10 @@
         <ProjectReference Include="..\shared\rpg-manager.shared.utils\rpg-manager.shared.utils.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="secrets.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

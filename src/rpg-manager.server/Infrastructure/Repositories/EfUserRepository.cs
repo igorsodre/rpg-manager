@@ -61,6 +61,7 @@ public class EfUserRepository : IUserRepository
         {
             UserName = userData.UserName,
             Email = userData.Email,
+            Name = userData.Name,
             EmailConfirmed = true,
             TokenVersion = 1
         };

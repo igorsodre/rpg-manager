@@ -12,7 +12,21 @@ public static class DependencyInjection
 {
     public static WebApplicationBuilder AddServices(this WebApplicationBuilder builder)
     {
+        var origins = new List<string>();
+        builder.Configuration.GetSection("Cors").GetSection("AllowedOrigins").Bind(origins);
         builder.Services
+            .AddCors(
+                options => {
+                    options.AddDefaultPolicy(
+                        policyBuilder => {
+                            policyBuilder.WithOrigins(origins.ToArray())
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                        }
+                    );
+                }
+            )
             .AddFluentValidationAutoValidation(options => { options.DisableDataAnnotationsValidation = true; })
             .AddFluentValidationClientsideAdapters()
             .AddValidatorsFromAssemblyContaining(typeof(AssemblyMarker));

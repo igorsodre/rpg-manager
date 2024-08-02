@@ -84,6 +84,7 @@ public class ExternalAuthenticationService
                 new List<Claim>
                 {
                     new(JwtRegisteredClaimNames.Email, user.Email!),
+                    new(JwtRegisteredClaimNames.Name, user.Name),
                     new(Constants.TokenClaims.Id, user.Id),
                 }
             ),

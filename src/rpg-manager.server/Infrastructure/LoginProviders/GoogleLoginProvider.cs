@@ -6,7 +6,13 @@ using rpg_manager.shared.utils.Types;
 
 namespace rpg_manager.server.Infrastructure.LoginProviders;
 
-public record GoogleSettings(string ClientId, string ClientSecret);
+// public record GoogleSettings(string ClientId, string ClientSecret);
+public class GoogleSettings
+{
+    public required string ClientId { get; init; }
+
+    public required string ClientSecret { get; init; }
+}
 
 public interface IGoogleLoginProvider
 {

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using rpg_manager.server.Startup;
+using rpg_manager.shared.utils;
 
 namespace rpg_manager.server;
 
@@ -11,20 +12,21 @@ public class TokenService
     private readonly RsaSecurityKey _rsaKey;
     private readonly TimeProvider _timeProvider;
     private readonly int _tokenLifetimeInMinutes;
+    private readonly JwtSecurityTokenHandler _securityTokenHandler = new();
 
     public TokenService(JwtConfigOptions jwtConfigOptions, TimeProvider timeProvider)
     {
         _tokenLifetimeInMinutes = jwtConfigOptions.TokenLifetimeInMinutes;
         _timeProvider = timeProvider;
         using var rsa = RSA.Create();
-        rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(jwtConfigOptions.PrivateKey), out _);
-        var rsaParameters = rsa.ExportParameters(false);
+        rsa.ImportFromPem(jwtConfigOptions.PrivateKey.FromBase64());
+        var rsaParameters = rsa.ExportParameters(true);
         _rsaKey = new RsaSecurityKey(rsaParameters);
     }
 
     public string GenerateToken(IEnumerable<Claim> tokenAttributes)
     {
-        var signingCredentials = new SigningCredentials(_rsaKey, SecurityAlgorithms.HmacSha512);
+        var signingCredentials = new SigningCredentials(_rsaKey, SecurityAlgorithms.RsaSha512);
         var descriptor = new SecurityTokenDescriptor
         {
             IssuedAt = _timeProvider.GetUtcNow().UtcDateTime,
@@ -33,10 +35,9 @@ public class TokenService
             Subject = new ClaimsIdentity(tokenAttributes),
             SigningCredentials = signingCredentials
         };
-        var tokenHandler = new JwtSecurityTokenHandler();
 
-        var token = tokenHandler.CreateToken(descriptor);
+        var token = _securityTokenHandler.CreateToken(descriptor);
 
-        return tokenHandler.WriteToken(token);
+        return _securityTokenHandler.WriteToken(token);
     }
 }
