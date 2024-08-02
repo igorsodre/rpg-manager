@@ -15,7 +15,7 @@ public class ExternalAuthController : ControllerBase
         _externalAuthenticationService = externalAuthenticationService;
     }
 
-    [HttpPost("external")]
+    [HttpPost("google/web")]
     [ProducesResponseType(typeof(ApiResponse<LoginResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -29,6 +29,6 @@ public class ExternalAuthController : ControllerBase
     [Authorize]
     public IActionResult Test()
     {
-        return Ok(User.Claims);
+        return Ok(User.Claims.ToDictionary(key => key.Type, value => value.Value));
     }
 }
