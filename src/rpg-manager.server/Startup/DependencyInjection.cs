@@ -1,7 +1,9 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Diagnostics;
+using rpg_manager.database.Repositories;
 using rpg_manager.server.ExternalAuthentication;
+using rpg_manager.server.Infrastructure.Repositories;
 using rpg_manager.shared.utils.Types;
 
 namespace rpg_manager.server.Startup;
@@ -16,6 +18,12 @@ public static class DependencyInjection
             .AddValidatorsFromAssemblyContaining(typeof(AssemblyMarker));
 
         builder.Services.AddScoped<ExternalAuthenticationService>();
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddRepositories(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IUserRepository, EfUserRepository>();
         return builder;
     }
 

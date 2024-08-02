@@ -39,6 +39,7 @@ public class ExternalAuthenticationService
         CancellationToken cancellationToken = default
     )
     {
+        // Verify id token is valid
         var result = await _googleLoginProvider.VerifyToken(externalLoginData.IdToken);
         if (result.IsError())
         {
@@ -47,39 +48,31 @@ public class ExternalAuthenticationService
 
         var tokenPayload = result.SuccessValue();
 
+        // Check if user exists
         var userResult = await _userRepository.FindUserByEmail(tokenPayload.Email);
         if (userResult.IsError())
         {
             return userResult.ErrorValue();
         }
 
-        if (userResult.SuccessValue().IsNone())
+        // if user does not exist, creates it
+        ApplicationUser user;
+        if (userResult.SuccessValue().IsSome())
         {
-            var isUserCreate = await _userRepository.CreateUser(
+            user = userResult.SuccessValue().Value();
+        }
+        else
+        {
+            var userCreateResult = await _userRepository.CreateUser(
                 new CreateUserData(Name: tokenPayload.Name, Email: tokenPayload.Email, UserName: tokenPayload.Email)
             );
-            if (isUserCreate.IsError())
+            if (userCreateResult.IsError())
             {
-                return isUserCreate.ErrorValue();
+                return userCreateResult.ErrorValue();
             }
 
-            userResult = await _userRepository.FindUserByEmail(tokenPayload.Email);
-            if (userResult.IsError())
-            {
-                return userResult.ErrorValue();
-            }
-
-            if (userResult.SuccessValue().IsNone())
-            {
-                return new ApplicationError(
-                    $"Unable to create user for email: {tokenPayload.Email}",
-                    [],
-                    HttpStatusCode.BadRequest
-                );
-            }
+            user = userCreateResult.SuccessValue();
         }
-
-        var user = userResult.SuccessValue().Value();
 
         return GenerateLoginResult(user);
     }

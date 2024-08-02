@@ -16,5 +16,5 @@ public interface IUserRepository
 
     Task<Result<ApplicationError, Option<ApplicationUser>>> FindUserById(string userId);
 
-    Task<Result<ApplicationError, Success>> CreateUser(CreateUserData userData);
+    Task<Result<ApplicationError, ApplicationUser>> CreateUser(CreateUserData userData);
 }

@@ -3,6 +3,8 @@ all:
 	
 add-migration:
 	dotnet ef migrations add $(name) -p rpg-manager.database/rpg-manager.database.csproj -o Migrations
+remove-migration:
+	dotnet ef migrations remove  -p rpg-manager.database/rpg-manager.database.csproj
 	
 run-migrations:
 	dotnet ef database update -p rpg-manager.database/rpg-manager.database.csproj
